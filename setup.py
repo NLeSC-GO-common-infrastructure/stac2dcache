@@ -5,20 +5,22 @@ import os
 from setuptools import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
-
-# To update the package version number, edit CITATION.cff
-with open('CITATION.cff', 'r') as cff:
-    for line in cff:
-        if 'version:' in line:
-            version = line.replace('version:', '').strip().strip('"')
+version = {}
+# To update the package version number, edit stac2webdav/__version__.py
+with open(os.path.join(here, 'stac2webdav', '__version__.py')) as f:
+    exec(f.read(), version)
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
+with open('requirements.txt') as requirements_file:
+    requirements = requirements_file.read().split()
+
 setup(
     name='stac2webdav',
-    version=version,
-    description="Python tool to create and manipulate STAC catalogs on a WebDAV server",
+    version=version['__version__'],
+    description=('Python tool to create and manipulate '
+                 'STAC catalogs on a WebDAV server'),
     long_description=readme + '\n\n',
     author="Team Atlas",
     author_email='team-atlas@esciencecenter.nl',
@@ -41,7 +43,7 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
     test_suite='tests',
-    install_requires=[],  # FIXME: add your package's dependencies to this list
+    install_requires=requirements,
     setup_requires=[
         # dependency for `python setup.py test`
         'pytest-runner',
@@ -57,6 +59,5 @@ setup(
     ],
     extras_require={
         'dev':  ['prospector[with_pyroma]', 'yapf', 'isort'],
-    },
-    data_files=[('citation/stac2webdav', ['CITATION.cff'])]
+    }
 )

@@ -1,0 +1,8 @@
+aiohttp
+dask[complete]
+geopandas
+pystac
+requests
+urlpath
+rasterio
+rioxarray
