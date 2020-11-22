@@ -49,12 +49,12 @@
    :target: https://bestpractices.coreinfrastructure.org/projects/< replace with created project identifier >
    :alt: CII Best Practices Badge
 
-.. |Python Build| image:: https://github.com/NLeSC-GO-common-infrastructure/stac2webdav/workflows/Python/badge.svg
-   :target: https://github.com/NLeSC-GO-common-infrastructure/stac2webdav/actions?query=workflow%3A%22Python%22
+.. |Python Build| image:: https://github.com/NLeSC-GO-common-infrastructure/stac2webdav/workflows/Build/badge.svg
+   :target: https://github.com/NLeSC-GO-common-infrastructure/stac2webdav/actions?query=workflow%3A%22Build%22
    :alt: Python Build
 
-.. |PyPI Publish| image:: https://github.com/NLeSC-GO-common-infrastructure/stac2webdav/workflows/PyPI/badge.svg
-   :target: https://github.com/NLeSC-GO-common-infrastructure/stac2webdav/actions?query=workflow%3A%22PyPI%22
+.. |PyPI Publish| image:: https://github.com/NLeSC-GO-common-infrastructure/stac2webdav/workflows/Publish/badge.svg
+   :target: https://github.com/NLeSC-GO-common-infrastructure/stac2webdav/actions?query=workflow%3A%22Publish%22
    :alt: PyPI Publish
 
 ################################################################################
