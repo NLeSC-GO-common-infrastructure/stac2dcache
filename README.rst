@@ -60,13 +60,18 @@
    :alt: PyPI Publish
 
 ################################################################################
-STAC2webdav
+STAC2WebDAV
 ################################################################################
 
-Python tool to create and manipulate STAC catalogs on a WebDAV server
+STAC2WebDAV is a Python tool to create and manipulate STAC catalogs on a 
+WebDAV server. It is based on `PySTAC <https://github.com/stac-utils/pystac>`_
+and it offers the following additional functionalities:
 
-
-The project setup is documented in `a separate document <project_setup.rst>`_. Feel free to remove this document (and/or the link to this document) if you don't need it.
+* download assets to the local filesystem or to a WebDAV-based storage;
+* load assets using a set of predefined drivers (e.g. for raster data, and
+  text files)
+* open a catalog as a `geopandas <https://github.com/geopandas/geopandas>`_ 
+  data-frame.
 
 Installation
 ------------
