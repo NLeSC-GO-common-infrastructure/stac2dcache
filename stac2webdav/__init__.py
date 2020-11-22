@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
-
-import logging
+__author__ = "Team Atlas"
+__email__ = 'team-atlas@esciencecenter.nl'
 
 from .__version__ import __version__
 
-logging.getLogger(__name__).addHandler(logging.NullHandler())
+import logging
 
-__author__ = "Team Atlas"
-__email__ = 'team-atlas@esciencecenter.nl'
+from .configure import configure
+
+logging.getLogger(__name__).addHandler(logging.NullHandler())
