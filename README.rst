@@ -19,8 +19,6 @@
    * - Continuous integration
      - |Python Build| |PyPI Publish|
 
-(Customize these badges with your own links, and check https://shields.io/ or https://badgen.net/ to see which other badges are available.)
-
 .. |GitHub Badge| image:: https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue
    :target: https://github.com/NLeSC-GO-common-infrastructure/stac2webdav
    :alt: GitHub Badge
@@ -76,7 +74,7 @@ and it offers the following additional functionalities:
 Installation
 ------------
 
-To install stac2webdav, do:
+To install STAC2WebDAV, do:
 
 .. code-block:: console
 
@@ -102,7 +100,7 @@ Include a link to your project's full documentation here.
 Contributing
 ************
 
-If you want to contribute to the development of STAC2webdav,
+If you want to contribute to the development of STAC2WebDAV,
 have a look at the `contribution guidelines <CONTRIBUTING.rst>`_.
 
 License
