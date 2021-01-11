@@ -10,6 +10,7 @@ from .authentication import Authentication
 
 class IO:
     """ Object to perform IO tasks with a local or remote file system """
+
     def __init__(self, authentication_from=None, authentication_to=None):
         """
 
@@ -79,16 +80,18 @@ class IO:
         to_uri = urlpath.URL(to_uri) / from_uri.name
 
         # Build session and get data trunks
-        auth = requests.auth.HTTPBasicAuth(self.authentication_from.get_auth()[
-                                           0], self.authentication_from.get_auth()[1])
         session = requests.session()
-        session.auth = auth
+        if self.authentication_from.get_auth() is not None:
+            auth = requests.auth.HTTPBasicAuth(
+                self.authentication_from.get_auth()[0],
+                self.authentication_from.get_auth()[1])
+            session.auth = auth
         s = session.get(from_uri.as_uri(), stream=True)
         filesize = int(s.headers['Content-length'])
         chunks = (chunk for chunk in s.iter_content(chunk_size=1024)
                   if chunk)
-        
-        if to_uri.scheme.startswith('http'): # save to remote destination
+
+        if to_uri.scheme.startswith('http'):  # save to remote destination
             with from_uri.get(auth=self.authentication_from.get_auth(),
                               headers=self.authentication_from.get_headers(),
                               stream=True) as r_get:
@@ -98,10 +101,13 @@ class IO:
                     headers=self.authentication_to.get_headers()
                 )
                 r_put.raise_for_status()
-        else: # save to local
+        else:  # save to local
             path = pathlib.Path(to_uri)
             path.parent.mkdir(parents=True, exist_ok=True)
             with open(path, 'wb') as f:
-                for chunk in tqdm(chunks, desc='Downloading', unit='KB', total=filesize/1024):
+                for chunk in tqdm(chunks,
+                                  desc='Downloading',
+                                  unit='KB',
+                                  total=filesize/1024):
                     f.write(chunk)
         return to_uri.as_uri()
