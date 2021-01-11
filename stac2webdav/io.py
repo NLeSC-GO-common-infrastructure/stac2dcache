@@ -1,6 +1,8 @@
 import pathlib
 import urlpath
+import requests
 
+from tqdm import tqdm
 from pystac import STAC_IO
 
 from .authentication import Authentication
@@ -75,24 +77,31 @@ class IO:
         """
         from_uri = urlpath.URL(from_uri)
         to_uri = urlpath.URL(to_uri) / from_uri.name
-        with from_uri.get(auth=self.authentication_from.get_auth(),
-                          headers=self.authentication_from.get_headers(),
-                          stream=True) as r_get:
-            chunks = (chunk for chunk in r_get.iter_content(chunk_size=1024)
-                      if chunk)
-            if to_uri.scheme.startswith('http'):
-                # save to remote destination
+
+        # Build session and get data trunks
+        auth = requests.auth.HTTPBasicAuth(self.authentication_from.get_auth()[
+                                           0], self.authentication_from.get_auth()[1])
+        session = requests.session()
+        session.auth = auth
+        s = session.get(from_uri.as_uri(), stream=True)
+        filesize = int(s.headers['Content-length'])
+        chunks = (chunk for chunk in s.iter_content(chunk_size=1024)
+                  if chunk)
+        
+        if to_uri.scheme.startswith('http'): # save to remote destination
+            with from_uri.get(auth=self.authentication_from.get_auth(),
+                              headers=self.authentication_from.get_headers(),
+                              stream=True) as r_get:
                 r_put = to_uri.put(
                     data=chunks,
                     auth=self.authentication_to.get_auth(),
                     headers=self.authentication_to.get_headers()
                 )
                 r_put.raise_for_status()
-            else:
-                # save to local filesystem
-                path = pathlib.Path(to_uri)
-                path.parent.mkdir(parents=True, exist_ok=True)
-                with path.open(mode='wb') as f:
-                    for chunk in chunks:
-                        f.write(chunk)
+        else: # save to local
+            path = pathlib.Path(to_uri)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with open(path, 'wb') as f:
+                for chunk in tqdm(chunks, desc='Downloading', unit='KB', total=filesize/1024):
+                    f.write(chunk)
         return to_uri.as_uri()
