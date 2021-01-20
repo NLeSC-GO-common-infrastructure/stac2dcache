@@ -18,7 +18,7 @@ def catalog2geopandas(catalog):
 
 
 def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,
-                   to_uri=None, filesystem_from=None, filesystem_to=None):
+               to_uri=None, filesystem_from=None, filesystem_to=None):
     """
     Download an asset for (one of) the items of a catalog
 
