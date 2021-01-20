@@ -1,8 +1,8 @@
 aiohttp
-dask[complete]
+dcachefs
+fsspec
 geopandas
 pystac
-requests
 urlpath
 rasterio
 rioxarray

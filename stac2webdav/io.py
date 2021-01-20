@@ -1,23 +1,21 @@
-import pathlib
+import dcachefs
+import fsspec
 import urlpath
 
 from pystac import STAC_IO
 
-from .authentication import Authentication
-
 
 class IO:
-    """ Object to perform IO tasks with a local or remote file system """
-    def __init__(self, authentication_from=None, authentication_to=None):
+    """ Object to perform IO tasks with `fsspec` compatible file systems """
+    def __init__(self, filesystem_from=None, filesystem_to=None):
         """
-
-        :param authentication_from: (:class:`~.authentication.Authentication`)
-            authentication for input source
-        :param authentication_to: (:class:`~.authentication.Authentication`)
-            authentication for output destination
+        :param filesystem_from: (`fsspec` compatible FileSystem instance)
+            file system for input source
+        :param filesystem_to: (`fsspec` compatible FileSystem instance)
+            file system for output destination
         """
-        self.authentication_from = authentication_from or Authentication()
-        self.authentication_to = authentication_to or Authentication()
+        self.filesystem_from = filesystem_from
+        self.filesystem_to = filesystem_to
 
     def set_custom_reader_and_writer(self):
         """
@@ -40,15 +38,9 @@ class IO:
 
         :param uri: (string) URI where to read from
         """
-        url = urlpath.URL(uri)
-        if url.scheme.startswith('http'):
-            r = url.get(auth=self.authentication_from.get_auth(),
-                        headers=self.authentication_from.get_headers())
-            r.raise_for_status()
-            text = r.text
-        else:
-            text = STAC_IO.default_read_text_method(uri)
-        return text
+        fs = self.filesystem_from or fsspec
+        with fs.open(uri) as f:
+            return f.read()
 
     def write(self, uri, text):
         """
@@ -57,42 +49,30 @@ class IO:
         :param uri: (string) URI where to write to
         :param text: (string) text to be written
         """
-        url = urlpath.URL(uri)
-        if url.scheme.startswith('http'):
-            r = url.put(data=text,
-                        auth=self.authentication_to.get_auth(),
-                        headers=self.authentication_to.get_headers())
-            r.raise_for_status()
-        else:
-            STAC_IO.default_write_text_method(uri, text)
+        fs = self.filesystem_to or fsspec
+        with fs.open(uri, "w") as f:
+            return f.write(text)
 
-    def download(self, from_uri, to_uri):
+    def copy(self, from_uri, to_uri):
         """
-        Download a file and write it to a local or remote file system
+        Copy a file from the source to the destination file system
 
-        :param from_uri: (str) URI of the file to download
+        :param from_uri: (str) URI of the file to copy
         :param to_uri: (str) URI of the folder where to save the file
         """
         from_uri = urlpath.URL(from_uri)
         to_uri = urlpath.URL(to_uri) / from_uri.name
-        with from_uri.get(auth=self.authentication_from.get_auth(),
-                          headers=self.authentication_from.get_headers(),
-                          stream=True) as r_get:
-            chunks = (chunk for chunk in r_get.iter_content(chunk_size=1024)
-                      if chunk)
-            if to_uri.scheme.startswith('http'):
-                # save to remote destination
-                r_put = to_uri.put(
-                    data=chunks,
-                    auth=self.authentication_to.get_auth(),
-                    headers=self.authentication_to.get_headers()
-                )
-                r_put.raise_for_status()
-            else:
-                # save to local filesystem
-                path = pathlib.Path(to_uri)
-                path.parent.mkdir(parents=True, exist_ok=True)
-                with path.open(mode='wb') as f:
-                    for chunk in chunks:
-                        f.write(chunk)
+
+        fs_from = self.filesystem_from or fsspec
+        fs_to = self.filesystem_to or fsspec
+        with fs_from.open(from_uri.as_uri(), "rb") as f_read:
+            with fs_to.open(to_uri.as_uri(), "wb") as f_write:
+                if isinstance(self.filesystem_to, dcachefs.dCacheFileSystem):
+                    f_write.write(f_read)  # stream upload of file-like object
+                else:
+                    data = True
+                    while data:
+                        data = f_read.read(5*2**20)
+                        f_write.write(data)
+
         return to_uri.as_uri()

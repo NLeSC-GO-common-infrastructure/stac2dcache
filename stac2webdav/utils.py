@@ -1,7 +1,6 @@
 import geopandas
 import urlpath
 
-from .authentication import Authentication
 from .drivers import get_driver
 from .io import IO
 
@@ -18,9 +17,8 @@ def catalog2geopandas(catalog):
                                                  for item in items))
 
 
-def download_asset(catalog, asset_key, update_catalog=False, item_id=None,
-                   to_uri=None, authentication_from=None,
-                   authentication_to=None):
+def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,
+                   to_uri=None, filesystem_from=None, filesystem_to=None):
     """
     Download an asset for (one of) the items of a catalog
 
@@ -32,17 +30,12 @@ def download_asset(catalog, asset_key, update_catalog=False, item_id=None,
         items of the catalog)
     :param to_uri: (optional, str) URI of the folder where to save the assets
         (default: the catalog's item directories)
-    :param authentication_from: (optional) dictionary containing source
-        authentication credentials or :class:`~.authentication.Authentication`
-    :param authentication_to: (optional) dictionary containing destination
-        authentication credentials or :class:`~.authentication.Authentication`
+    :param filesystem_from: (optional, `fsspec` compatible FileSystem instance)
+        file system for input source
+    :param filesystem_to: (optional, `fsspec` compatible FileSystem instance)
+        file system for output destination
     """
-    if isinstance(authentication_from, dict):
-        authentication_from = Authentication(**authentication_from)
-    if isinstance(authentication_to, dict):
-        authentication_to = Authentication(**authentication_to)
-    io = IO(authentication_from=authentication_from,
-            authentication_to=authentication_to)
+    io = IO(filesystem_from=filesystem_from, filesystem_to=filesystem_to)
 
     root_href = catalog.get_self_href()
     if root_href is None and to_uri is None:
@@ -66,12 +59,13 @@ def download_asset(catalog, asset_key, update_catalog=False, item_id=None,
             destination = urlpath.URL(to_uri) / item.id
         else:
             destination = urlpath.URL(item.get_self_href()).parent
-        new_href = io.download(from_uri=asset.href, to_uri=destination)
+        new_href = io.copy(from_uri=asset.get_absolute_href(),
+                           to_uri=destination)
         if update_catalog:
             asset.href = new_href  # update link in catalog
 
 
-def get_asset(catalog, asset_key, item_id, driver=None, authentication=None,
+def get_asset(catalog, asset_key, item_id, driver=None, filesystem=None,
               **kwargs):
     """
     Get an asset from the catalog using one of the available drivers
@@ -81,14 +75,14 @@ def get_asset(catalog, asset_key, item_id, driver=None, authentication=None,
     :param item_id: (str) item ID
     :param driver: (optional, str) name of the driver to read the asset
         (default: guess the driver from the asset's extension)
-    :param authentication: (optional) dictionary containing authentication
-        credentials or :class:`~.authentication.Authentication`
+    :param filesystem: (optional, `fsspec` compatible FileSystem instance)
+        file system of input source
     :param kwargs: (optional) keyword arguments passed on to the driver, e.g.
                    `chunks` for raster data or `blocksize` for text files.
     :return: asset read
     """
     item = catalog.get_item(item_id, recursive=True)
     asset = item.assets.get(asset_key)
-    driver = get_driver(uri=asset.href, driver=driver)
-    driver.set_authentication(authentication)
+    driver = get_driver(uri=asset.get_absolute_href(), driver=driver)
+    driver.set_filesystem(filesystem)
     return driver.get(**kwargs)

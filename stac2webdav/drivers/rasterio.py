@@ -16,12 +16,15 @@ class RasterioDriver(Driver):
         """
         gdal_config_options = {}
 
-        auth = self.authentication.get_auth()
+        auth = self.filesystem.client_kwargs.get("auth")
         if auth is not None:
             gdal_config_options['GDAL_HTTP_AUTH'] = 'BASIC'
-            gdal_config_options['GDAL_HTTP_USERPWD'] = '{}:{}'.format(*auth)
+            gdal_config_options['GDAL_HTTP_USERPWD'] = '{}:{}'.format(
+                auth.login,
+                auth.password
+            )
 
-        headers = self.authentication.get_headers()
+        headers = self.filesystem.client_kwargs.get("headers")
         if headers is not None:
             headers_text = '\n'.join([f'{key}: {value}'
                                       for key, value in headers.items()])

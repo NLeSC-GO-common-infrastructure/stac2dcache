@@ -5,6 +5,6 @@ from .__version__ import __version__
 
 import logging
 
-from .configure import configure
+from .configure import configure_filesystem
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())

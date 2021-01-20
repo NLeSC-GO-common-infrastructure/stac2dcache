@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from ..authentication import Authentication
 
 
 class Driver(ABC):
@@ -10,16 +9,16 @@ class Driver(ABC):
         :param uri: URI of the asset to be loaded
         """
         self.uri = uri
-        self.authentication = None
+        self.filesystem = None
 
-    def set_authentication(self, authentication=None):
+    def set_filesystem(self, filesystem=None):
         """
         Configure driver authentication
 
-        :param authentication: (optional, `~.authentication.Authentication`)
-            object including authentication credentials
+        :param filesystem: (optional, `fsspec` compatible FileSystem instance)
+            file system associated to the driver
         """
-        self.authentication = authentication or Authentication()
+        self.filesystem = filesystem
 
     @abstractmethod
     def get(self, **kwargs):
