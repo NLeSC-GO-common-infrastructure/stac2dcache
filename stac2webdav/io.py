@@ -70,8 +70,11 @@ class IO:
         from_uri = urlpath.URL(from_uri)
         to_uri = urlpath.URL(to_uri) / from_uri.name
 
-        fs_from = self.filesystem_from or fsspec
-        fs_to = self.filesystem_to or fsspec
+        fs_from = self.filesystem_from or \
+            fsspec.get_fs_token_paths(from_uri.as_uri())[0]
+        fs_to = self.filesystem_to or \
+            fsspec.get_fs_token_paths(to_uri.as_uri())[0]
+
         with fs_from.open(from_uri.as_uri(), "rb") as f_read:
             with fs_to.open(to_uri.as_uri(), "wb") as f_write:
                 if isinstance(self.filesystem_to, dcachefs.dCacheFileSystem):
