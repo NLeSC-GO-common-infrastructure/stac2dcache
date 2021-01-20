@@ -38,9 +38,13 @@ class IO:
 
         :param uri: (string) URI where to read from
         """
-        fs = self.filesystem_from or fsspec
-        with fs.open(uri) as f:
-            return f.read()
+        uri = urlpath.URL(uri)
+        if uri.scheme:
+            with self.filesystem_from.open(uri.as_uri()) as f:
+                text = f.read()
+        else:
+            text = STAC_IO.default_read_text_method(uri.as_uri())
+        return text
 
     def write(self, uri, text):
         """
@@ -49,9 +53,12 @@ class IO:
         :param uri: (string) URI where to write to
         :param text: (string) text to be written
         """
-        fs = self.filesystem_to or fsspec
-        with fs.open(uri, "w") as f:
-            return f.write(text)
+        uri = urlpath.URL(uri)
+        if uri.scheme:
+            with self.filesystem_to.open(uri.as_uri(), "w") as f:
+                f.write(text)
+        else:
+            STAC_IO.default_write_text_method(uri.as_uri(), text)
 
     def copy(self, from_uri, to_uri):
         """
