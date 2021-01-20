@@ -1,6 +1,8 @@
+import math
 import pathlib
 import urlpath
 
+from tqdm import tqdm
 from pystac import STAC_IO
 
 from .authentication import Authentication
@@ -8,6 +10,7 @@ from .authentication import Authentication
 
 class IO:
     """ Object to perform IO tasks with a local or remote file system """
+
     def __init__(self, authentication_from=None, authentication_to=None):
         """
 
@@ -78,8 +81,14 @@ class IO:
         with from_uri.get(auth=self.authentication_from.get_auth(),
                           headers=self.authentication_from.get_headers(),
                           stream=True) as r_get:
-            chunks = (chunk for chunk in r_get.iter_content(chunk_size=1024)
-                      if chunk)
+            tot = math.ceil(float(r_get.headers.get('Content-Length', 0))/1024)
+            progress_bar = tqdm(
+                r_get.iter_content(chunk_size=1024),
+                desc=from_uri.as_uri(),
+                unit='KB',
+                total=tot
+            )
+            chunks = (chunk for chunk in progress_bar if chunk)
             if to_uri.scheme.startswith('http'):
                 # save to remote destination
                 r_put = to_uri.put(
