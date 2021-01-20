@@ -10,13 +10,31 @@ from .io import IO
 fsspec.register_implementation("dcache", dcachefs.dCacheFileSystem)
 
 
+def configure(filesystem="https", username=None, password=None,
+              token_filename=None):
+    """
+    Set up a remote file system with the provided authentication credentials
+    (username/password or bearer-token) and configure custom read/write methods
+    for PySTAC
+
+    :param filesystem: (str)
+    :param username: (optional, str)
+    :param password: (optional, str)
+    :param token_filename: (optional, str) path to file with the token
+    """
+    fs = configure_filesystem(filesystem, username, password, token_filename)
+    io = IO(filesystem_from=fs, filesystem_to=fs)
+    io.set_custom_reader_and_writer()
+    return fs
+
+
 def configure_filesystem(filesystem="https", username=None, password=None,
                          token_filename=None):
     """
-    Configure the custom PySTAC's reader and writer using the server's
-    authentication credentials (username/password or bearer-token)
+    Set up a remote file system with the provided authentication credentials
+    (username/password or bearer-token)
 
-    :param filesystem:
+    :param filesystem: (str)
     :param username: (optional, str)
     :param password: (optional, str)
     :param token_filename: (optional, str) path to file with the token
@@ -39,9 +57,6 @@ def configure_filesystem(filesystem="https", username=None, password=None,
     fsspec.config.conf[filesystem] = dict(client_kwargs=client_kwargs)
     filesystem_class = fsspec.get_filesystem_class(filesystem)
     filesystem = filesystem_class(block_size=0)  # stream mode
-
-    io = IO(filesystem_from=filesystem, filesystem_to=filesystem)
-    io.set_custom_reader_and_writer()
     return filesystem
 
 
