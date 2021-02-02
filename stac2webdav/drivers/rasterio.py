@@ -14,7 +14,7 @@ class RasterioDriver(Driver):
         :param kwargs: (optional) arguments to be passed to open_rasterio
         :return :class:`~rioxarray.core.dataarray.DataArray`
         """
-        gdal_config_options = {}
+        gdal_config_options = {"GDAL_DISABLE_READDIR_ON_OPEN": "EMPTY_DIR"}
 
         auth = self.filesystem.client_kwargs.get("auth")
         if auth is not None:
