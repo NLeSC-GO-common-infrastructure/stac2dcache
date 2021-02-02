@@ -15,9 +15,9 @@ def catalog2geopandas(catalog, crs=None):
     :return: :class:`~geopandas.GeoDataFrame`
     """
     crs = crs or "WGS84"
-    items = catalog.get_all_items()
-    gdf = geopandas.GeoDataFrame.from_features((item.to_dict()
-                                                 for item in items))
+    features = {item.id: item.to_dict() for item in catalog.get_all_items()}
+    gdf = geopandas.GeoDataFrame.from_features(features.values())
+    gdf.index = features.keys()
     gdf = gdf.set_crs(crs)
     return gdf
 
