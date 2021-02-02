@@ -1,6 +1,8 @@
 import geopandas
 import urlpath
 
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
 from .drivers import get_driver
 from .io import IO
 
@@ -23,7 +25,8 @@ def catalog2geopandas(catalog, crs=None):
 
 
 def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,
-               to_uri=None, filesystem_from=None, filesystem_to=None):
+               to_uri=None, filesystem_from=None, filesystem_to=None,
+               max_workers=None):
     """
     Download an asset for (one of) the items of a catalog
 
@@ -39,6 +42,8 @@ def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,
         file system for input source
     :param filesystem_to: (optional, `fsspec` compatible FileSystem instance)
         file system for output destination
+    :param max_workers: (optional, int) number of processes that will be used
+        to copy the assets (default to number of processors)
     """
     io = IO(filesystem_from=filesystem_from, filesystem_to=filesystem_to)
 
@@ -55,6 +60,30 @@ def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,
             raise ValueError(f'Item not found: {item_id}')
     else:
         items = catalog.get_all_items()
+
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+
+        future_to_asset = {}
+        for item in items:
+            asset = item.assets.get(asset_key)
+            if asset is None:
+                raise ValueError(f'Asset {asset_key} not found for {item.id}')
+            if to_uri is not None:
+                destination = urlpath.URL(to_uri) / item.id
+            else:
+                destination = urlpath.URL(item.get_self_href()).parent
+            future = executor.submit(
+                io.copy,
+                from_uri=asset.get_absolute_href(),
+                to_uri=destination,
+            )
+            future_to_asset[future] = asset
+
+        for future in as_completed(future_to_asset):
+            new_href = future.result()
+            if update_catalog:
+                asset = future_to_asset[future]
+                asset.href = new_href  # update link in catalog
 
     for item in items:
         asset = item.assets.get(asset_key)
