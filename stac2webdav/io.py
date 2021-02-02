@@ -76,6 +76,7 @@ class IO:
             fsspec.get_fs_token_paths(to_uri.as_uri())[0]
 
         with fs_from.open(from_uri.as_uri(), "rb") as f_read:
+            fs_to.mkdir(to_uri.parent.as_uri())
             with fs_to.open(to_uri.as_uri(), "wb") as f_write:
                 if isinstance(self.filesystem_to, dcachefs.dCacheFileSystem):
                     f_write.write(f_read)  # stream upload of file-like object
