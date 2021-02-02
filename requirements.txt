@@ -6,3 +6,4 @@ pystac
 urlpath
 rasterio
 rioxarray
+tqdm
