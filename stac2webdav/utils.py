@@ -5,16 +5,21 @@ from .drivers import get_driver
 from .io import IO
 
 
-def catalog2geopandas(catalog):
+def catalog2geopandas(catalog, crs=None):
     """
     Create a geopandas data-frame with the catalog items
 
     :param catalog: (:class:`~pystac.Catalog`) input catalog
+    :param crs: (string or accepted CRS object) coordinate reference system
+        employed in the catalog (default is WGS84)
     :return: :class:`~geopandas.GeoDataFrame`
     """
+    crs = crs or "WGS84"
     items = catalog.get_all_items()
-    return geopandas.GeoDataFrame.from_features((item.to_dict()
+    gdf = geopandas.GeoDataFrame.from_features((item.to_dict()
                                                  for item in items))
+    gdf = gdf.set_crs(crs)
+    return gdf
 
 
 def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,
