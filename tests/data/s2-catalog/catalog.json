@@ -1,0 +1,32 @@
+{
+    "id": "s2-catalog",
+    "stac_version": "1.0.0-beta.2",
+    "description": "Test catalog for Sentinel-2 data",
+    "links": [
+        {
+            "rel": "root",
+            "href": "./catalog.json",
+            "type": "application/json"
+        },
+        {
+            "rel": "item",
+            "href": "./S2B_5VNK_20180325_1_L2A/S2B_5VNK_20180325_1_L2A.json",
+            "type": "application/json"
+        },
+        {
+            "rel": "item",
+            "href": "./S2A_5VNK_20180324_0_L2A/S2A_5VNK_20180324_0_L2A.json",
+            "type": "application/json"
+        },
+        {
+            "rel": "item",
+            "href": "./S2B_5VNK_20180322_0_L2A/S2B_5VNK_20180322_0_L2A.json",
+            "type": "application/json"
+        },
+        {
+            "rel": "item",
+            "href": "./S2B_5VNK_20180319_0_L2A/S2B_5VNK_20180319_0_L2A.json",
+            "type": "application/json"
+        }
+    ]
+}
