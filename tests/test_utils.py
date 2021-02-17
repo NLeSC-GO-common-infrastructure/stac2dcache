@@ -10,6 +10,7 @@ from stac2webdav.utils import catalog2geopandas, copy_asset, get_asset
 
 from . import test_data_path
 
+
 @pytest.fixture(scope='function')
 def catalog():
     catalog_path = test_data_path / "s2-catalog"

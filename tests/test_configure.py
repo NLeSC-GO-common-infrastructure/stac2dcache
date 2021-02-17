@@ -60,4 +60,3 @@ def test_configure_modifies_pystac_io_methods():
     _ = configure()
     assert pystac.STAC_IO.read_text_method.__func__ == stac2webdav.io.IO.read
     assert pystac.STAC_IO.write_text_method.__func__ == stac2webdav.io.IO.write
-
