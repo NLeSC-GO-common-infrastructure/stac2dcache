@@ -8,6 +8,13 @@ from stac2webdav.configure import configure, configure_filesystem
 from . import test_data_path
 
 
+@pytest.fixture(scope="function")
+def set_default_pystac_readers():
+    yield
+    pystac.STAC_IO.read_text_method = pystac.STAC_IO.default_read_text_method
+    pystac.STAC_IO.write_text_method = pystac.STAC_IO.default_write_text_method
+
+
 def test_configure_filesystem_returns_correct_fs_class():
     for fs_type in ("http", "dcache", "file"):
         fs_class = fsspec.get_filesystem_class(fs_type)
@@ -45,14 +52,14 @@ def test_configure_filesystem_checks_authentication_methods():
                              password="passwd")  # uname/passwd and token
 
 
-def test_configure_returns_correct_datatype():
+def test_configure_returns_correct_datatype(set_default_pystac_readers):
     for fs_type in ("http", "dcache", "file"):
         fs_class = fsspec.get_filesystem_class(fs_type)
         fs = configure(filesystem=fs_type)
         assert isinstance(fs, fs_class)
 
 
-def test_configure_modifies_pystac_io_methods():
+def test_configure_modifies_pystac_io_methods(set_default_pystac_readers):
     assert pystac.STAC_IO.read_text_method \
            == pystac.STAC_IO.default_read_text_method
     assert pystac.STAC_IO.write_text_method \
