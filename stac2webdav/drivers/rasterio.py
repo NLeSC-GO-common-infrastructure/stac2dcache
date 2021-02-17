@@ -16,7 +16,8 @@ class RasterioDriver(Driver):
         """
         gdal_config_options = {"GDAL_DISABLE_READDIR_ON_OPEN": "EMPTY_DIR"}
 
-        auth = self.filesystem.client_kwargs.get("auth")
+        client_kwargs = getattr(self.filesystem, "client_kwargs", None)
+        auth = None if not client_kwargs else client_kwargs.get("auth")
         if auth is not None:
             gdal_config_options['GDAL_HTTP_AUTH'] = 'BASIC'
             gdal_config_options['GDAL_HTTP_USERPWD'] = '{}:{}'.format(
@@ -24,7 +25,7 @@ class RasterioDriver(Driver):
                 auth.password
             )
 
-        headers = self.filesystem.client_kwargs.get("headers")
+        headers = None if not client_kwargs else client_kwargs.get("headers")
         if headers is not None:
             headers_text = '\n'.join([f'{key}: {value}'
                                       for key, value in headers.items()])

@@ -1,3 +1,5 @@
+import fsspec
+
 from abc import ABC, abstractmethod
 
 
@@ -19,6 +21,9 @@ class Driver(ABC):
             file system associated to the driver
         """
         self.filesystem = filesystem
+        if self.filesystem is None:
+            fs = fsspec.get_filesystem_class("file")
+            self.filesystem = fs()
 
     @abstractmethod
     def get(self, **kwargs):
