@@ -53,10 +53,12 @@ def configure_filesystem(filesystem="https", username=None, password=None,
             raise ValueError("Provide either token or username/password")
         client_kwargs.update(headers=dict(Authorization=f"Bearer {token}"))
 
-    # register authentication credentials and get fsspec filesystem
-    fsspec.config.conf[filesystem] = dict(client_kwargs=client_kwargs)
+    # get fsspec filesystem
     filesystem_class = fsspec.get_filesystem_class(filesystem)
-    filesystem = filesystem_class(block_size=0)  # stream mode
+    filesystem = filesystem_class(
+        client_kwargs=client_kwargs,
+        block_size=0,  # stream mode
+    )
     return filesystem
 
 
