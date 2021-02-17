@@ -1,11 +1,13 @@
 import urlpath
 
 from .rasterio import RasterioDriver
+from .raw import RawDriver
 from .textfiles import TextfilesDriver
 
 
 drivers = {
     'rasterio': RasterioDriver,
+    'raw': RawDriver,
     'textfiles': TextfilesDriver,
 }
 
