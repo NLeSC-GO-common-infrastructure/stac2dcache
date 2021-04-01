@@ -6,15 +6,20 @@
 Welcome to STAC2dCache's documentation!
 ==========================================================
 
+STAC2dCache is a Python tool to create and manipulate STAC catalogs on a 
+dCache storage system such as the infrastructure available at `SURF`_. 
+
+.. _SURF: http://doc.grid.surfsara.nl/en/latest/Pages/Advanced/grid_storage.html 
+
+The code is hosted on `GitHub`_. If you want to contribute to the development 
+of STAC2dCache, have a look at the  `contribution guidelines`_.
+
+.. _GitHub: https://github.com/NLeSC-GO-common-infrastructure/stac2dcache
+.. _contribution guidelines: https://github.com/NLeSC-GO-common-infrastructure/stac2dcache/tree/master/CONTRIBUTING.md
+
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   notebooks/tutorial
