@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = stac2webdav
+SPHINXPROJ    = stac2dcache
 SOURCEDIR     = .
 BUILDDIR      = _build
 

@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=stac2webdav
+set SPHINXPROJ=stac2dcache
 
 if "%1" == "" goto help
 

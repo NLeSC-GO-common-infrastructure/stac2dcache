@@ -6,7 +6,7 @@ import pytest
 import tempfile
 import xarray as xr
 
-from stac2webdav.utils import catalog2geopandas, copy_asset, get_asset
+from stac2dcache.utils import catalog2geopandas, copy_asset, get_asset
 
 from . import test_data_path
 

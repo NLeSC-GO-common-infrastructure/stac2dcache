@@ -1,9 +1,9 @@
 import fsspec
 import pystac
 import pytest
-import stac2webdav
+import stac2dcache
 
-from stac2webdav.configure import configure, configure_filesystem
+from stac2dcache.configure import configure, configure_filesystem
 
 from . import test_data_path
 
@@ -65,5 +65,5 @@ def test_configure_modifies_pystac_io_methods(set_default_pystac_readers):
     assert pystac.STAC_IO.write_text_method \
            == pystac.STAC_IO.default_write_text_method
     _ = configure()
-    assert pystac.STAC_IO.read_text_method.__func__ == stac2webdav.io.IO.read
-    assert pystac.STAC_IO.write_text_method.__func__ == stac2webdav.io.IO.write
+    assert pystac.STAC_IO.read_text_method.__func__ == stac2dcache.io.IO.read
+    assert pystac.STAC_IO.write_text_method.__func__ == stac2dcache.io.IO.write
