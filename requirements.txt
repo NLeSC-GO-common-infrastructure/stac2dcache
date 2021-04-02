@@ -1,0 +1,9 @@
+aiohttp
+dcachefs
+fsspec
+geopandas
+pystac
+urlpath
+rasterio
+rioxarray
+tqdm
