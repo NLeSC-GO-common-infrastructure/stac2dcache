@@ -83,7 +83,8 @@ Run tests (including coverage) with:
 Documentation
 *************
 
-Include a link to your project's full documentation here.
+A short `tutorial <notebooks/tutorial.ipynb>`_ illustrates how 
+to use STAC2dCache.
 
 Contributing
 ************
