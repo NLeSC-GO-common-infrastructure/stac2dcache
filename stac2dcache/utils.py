@@ -85,19 +85,6 @@ def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,
                 asset = future_to_asset[future]
                 asset.href = new_href  # update link in catalog
 
-    for item in items:
-        asset = item.assets.get(asset_key)
-        if asset is None:
-            raise ValueError(f'Asset {asset_key} not found for item {item.id}')
-        if to_uri is not None:
-            destination = urlpath.URL(to_uri) / item.id
-        else:
-            destination = urlpath.URL(item.get_self_href()).parent
-        new_href = io.copy(from_uri=asset.get_absolute_href(),
-                           to_uri=destination)
-        if update_catalog:
-            asset.href = new_href  # update link in catalog
-
 
 def get_asset(catalog, asset_key, item_id, driver=None, filesystem=None,
               **kwargs):
