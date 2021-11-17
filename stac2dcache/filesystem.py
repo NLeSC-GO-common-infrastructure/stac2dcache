@@ -2,37 +2,20 @@ import aiohttp
 import configparser
 import dcachefs
 import fsspec
+import os
 import pathlib
 
-from .io import IO
-
+from fsspec.core import split_protocol
 
 fsspec.register_implementation("dcache", dcachefs.dCacheFileSystem)
 
-
-def configure(filesystem="https", username=None, password=None,
-              token_filename=None):
-    """
-    Set up a remote file system with the provided authentication credentials
-    (username/password or bearer-token) and configure custom read/write methods
-    for PySTAC
-
-    :param filesystem: (str)
-    :param username: (optional, str)
-    :param password: (optional, str)
-    :param token_filename: (optional, str) path to file with the token
-    """
-    fs = configure_filesystem(filesystem, username, password, token_filename)
-    io = IO(filesystem_from=fs, filesystem_to=fs)
-    io.set_custom_reader_and_writer()
-    return fs
+CHUNKSIZE = 5 * 2**20  # default chunk size for streaming
 
 
 def configure_filesystem(filesystem="https", username=None, password=None,
                          token_filename=None):
     """
-    Set up a remote file system with the provided authentication credentials
-    (username/password or bearer-token)
+    Configure a http-based filesystem with authentication credentials.
 
     :param filesystem: (str)
     :param username: (optional, str)
@@ -60,6 +43,38 @@ def configure_filesystem(filesystem="https", username=None, password=None,
         block_size=0,  # stream mode
     )
     return filesystem
+
+
+def copy(source, dest, filesystem_from=None, filesystem_to=None):
+    """
+    Copy a file from the source to the destination file system
+
+    :param source: (str) urlpath of the file to copy
+    :param dest: (str) urlpath of the folder where to save the file
+    :param filesystem_from: (`fsspec` compatible file system instance)
+    :param filesystem_to: (`fsspec` compatible file system instance.)
+    :return (str) urlpath of the copied file
+    """
+    _, filename = os.path.split(source)
+    target = os.path.join(dest, filename)
+
+    filesystem_from = filesystem_from or \
+        fsspec.filesystem(split_protocol(source)[0])
+    filesystem_to = filesystem_to or \
+        fsspec.filesystem(split_protocol(dest)[0])
+
+    with filesystem_from.open(source, "rb") as f_read:
+        filesystem_to.makedirs(dest, exist_ok=True)
+        with filesystem_to.open(target, "wb") as f_write:
+            if isinstance(filesystem_to, dcachefs.dCacheFileSystem):
+                f_write.write(f_read)  # stream upload of file-like object
+            else:
+                data = True
+                while data:
+                    data = f_read.read(CHUNKSIZE)
+                    f_write.write(data)
+
+    return target
 
 
 def _get_token(filename=None):

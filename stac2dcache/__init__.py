@@ -5,6 +5,7 @@ from .__version__ import __version__
 
 import logging
 
-from .configure import configure, configure_filesystem
+from .stac_io import configure_stac_io
+from .filesystem import configure_filesystem
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
