@@ -4,7 +4,7 @@ import urlpath
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from .drivers import get_driver
-from .io import IO
+from .filesystem import copy
 
 
 def catalog2geopandas(catalog, crs=None):
@@ -45,8 +45,6 @@ def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,
     :param max_workers: (optional, int) number of processes that will be used
         to copy the assets (default to number of processors)
     """
-    io = IO(filesystem_from=filesystem_from, filesystem_to=filesystem_to)
-
     root_href = catalog.get_self_href()
     if root_href is None and to_uri is None:
         raise ValueError('Provide URI where to save the assets '
@@ -73,9 +71,11 @@ def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,
             else:
                 destination = urlpath.URL(item.get_self_href()).parent
             future = executor.submit(
-                io.copy,
-                from_uri=asset.get_absolute_href(),
-                to_uri=destination,
+                copy,
+                source=asset.get_absolute_href(),
+                dest=destination,
+                filesystem_from=filesystem_from,
+                filesystem_to=filesystem_to,
             )
             future_to_asset[future] = asset
 

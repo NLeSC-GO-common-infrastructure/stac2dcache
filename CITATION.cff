@@ -2,14 +2,15 @@
 ---
 cff-version: "1.1.0"
 title: "STAC2dCache"
+abstract: "STAC2dCache is a Python tool to create and manipulate STAC catalogs on a dCache storage system. "
 authors:
   -
     name: "Team Atlas, Netherlands eScience Center"
     city: Amsterdam
     country: NL
     email:
-date-released: 2021-04-09
-version: "0.1.1"
+date-released: 2021-11-17
+version: "0.2.0"
 repository-code: "https://github.com/NLeSC-GO-common-infrastructure/stac2dcache"
 keywords:
   - STAC
