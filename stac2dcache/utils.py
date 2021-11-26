@@ -1,10 +1,14 @@
 import geopandas
+import multiprocessing
 import urlpath
 
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from .drivers import get_driver
 from .filesystem import copy
+
+
+mp_context = multiprocessing.get_context("spawn")
 
 
 def catalog2geopandas(catalog, crs=None):
@@ -59,7 +63,8 @@ def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,
     else:
         items = catalog.get_all_items()
 
-    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+    with ProcessPoolExecutor(max_workers=max_workers, mp_context=mp_context) \
+            as executor:
 
         future_to_asset = {}
         for item in items:

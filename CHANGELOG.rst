@@ -5,6 +5,21 @@ Change Log
 All notable changes to this project will be documented in this file.
 This project adheres to `Semantic Versioning <http://semver.org/>`_.
 
+
+[0.2.1]
+*******
+
+Fixed
+-----
+
+* Process pool in copy_asset always spawn processes, avoiding issues with async filesystems
+
+Added
+-----
+
+* Global configure function
+
+
 [0.2.0]
 *******
 
