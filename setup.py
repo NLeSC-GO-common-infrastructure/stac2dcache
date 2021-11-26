@@ -16,6 +16,14 @@ with open('README.rst') as readme_file:
 with open('requirements.txt') as requirements_file:
     requirements = requirements_file.read().split()
 
+extras_require = {
+    'test': [
+        'pytest',
+        'pytest-cov',
+        'pycodestyle',
+    ],
+}
+
 setup(
     name='stac2dcache',
     version=version['__version__'],
@@ -40,16 +48,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
     ],
-    test_suite='tests',
     python_requires=">=3.7",
     install_requires=requirements,
-    setup_requires=[
-        # dependency for `python setup.py test`
-        'pytest-runner',
-    ],
-    tests_require=[
-        'pytest',
-        'pytest-cov',
-        'pycodestyle',
-    ]
+    extras_require=extras_require,
 )
