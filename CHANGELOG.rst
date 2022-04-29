@@ -5,6 +5,20 @@ Change Log
 All notable changes to this project will be documented in this file.
 This project adheres to `Semantic Versioning <http://semver.org/>`_.
 
+[0.3.0]
+*******
+
+Added
+-----
+
+* filesystems are now set up by default from the URIs' protocols, so no need to use stac_io/filesystem anymore if config files are available.
+
+Changed
+-------
+
+* The rasterio driver does not support load=False anymore - at least until raster=1.3 is out. fsspec now takes care of downloading the assets.
+* Relative HREFs are used for the assets if possible, making Catalogs more self-contained.
+
 
 [0.2.1]
 *******

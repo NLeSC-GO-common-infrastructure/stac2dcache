@@ -9,8 +9,8 @@ authors:
     city: Amsterdam
     country: NL
     email:
-date-released: 2021-11-26
-version: "0.2.1"
+date-released: 2022-04-29
+version: "0.3.0"
 repository-code: "https://github.com/NLeSC-GO-common-infrastructure/stac2dcache"
 keywords:
   - STAC
