@@ -2,6 +2,8 @@ import fsspec
 
 from abc import ABC, abstractmethod
 
+from fsspec.core import split_protocol
+
 
 class Driver(ABC):
     """ Driver base class """
@@ -18,12 +20,11 @@ class Driver(ABC):
         Configure driver authentication
 
         :param filesystem: (optional, `fsspec` compatible FileSystem instance)
-            file system associated to the driver
+            file system associated to the driver. If not specified it will be
+            inferred from the protocol.
         """
-        self.filesystem = filesystem
-        if self.filesystem is None:
-            fs = fsspec.get_filesystem_class("file")
-            self.filesystem = fs()
+        self.filesystem = filesystem or \
+            fsspec.filesystem(split_protocol(self.uri)[0])
 
     @abstractmethod
     def get(self, **kwargs):

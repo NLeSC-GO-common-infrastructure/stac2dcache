@@ -1,13 +1,16 @@
-from pystac.stac_io import DefaultStacIO
+import fsspec
+
+from pystac.stac_io import DefaultStacIO, StacIO
 
 
 class CustomIO(DefaultStacIO):
     """
     Object to perform IO tasks with a `fsspec` compatible file system.
 
-    :param filesystem: `fsspec` compatible file system instance.
+    :param filesystem: (optional) `fsspec` compatible file system instance. If
+        not provided, it will be inferred from the protocol.
     """
-    def __init__(self, filesystem):
+    def __init__(self, filesystem=None):
         self.filesystem = filesystem
 
     def read_text_from_href(self, href):
@@ -20,7 +23,8 @@ class CustomIO(DefaultStacIO):
             with self.filesystem.open(href, mode="r") as f:
                 text = f.read()
         else:
-            text = super().read_text_from_href(href)
+            with fsspec.open(href, mode="r") as f:
+                text = f.read()
         return text
 
     def write_text_to_href(self, href, txt):
@@ -34,7 +38,15 @@ class CustomIO(DefaultStacIO):
             with self.filesystem.open(href, mode="w") as f:
                 f.write(txt)
         else:
-            super().write_text_to_href(href=href, txt=txt)
+            with fsspec.open(href, mode="w") as f:
+                f.write(txt)
+
+
+def set_default_stac_io():
+    """
+    Register CustomIO class as default StacIO.
+    """
+    StacIO.set_default(CustomIO)
 
 
 def configure_stac_io(filesystem=None):

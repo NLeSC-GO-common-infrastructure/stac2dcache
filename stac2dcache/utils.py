@@ -88,7 +88,14 @@ def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,
             new_href = future.result()
             if update_catalog:
                 asset = future_to_asset[future]
-                asset.href = new_href  # update link in catalog
+                item_uri = urlpath.URL(asset.owner.get_self_href())
+                asset_uri = urlpath.URL(new_href)
+                if item_uri.parent == asset_uri.parent:
+                    # use relative path for asset
+                    asset.href = asset_uri.name
+                else:
+                    # keep absolute path for asset
+                    asset.href = new_href
 
 
 def get_asset(catalog, asset_key, item_id, driver=None, filesystem=None,

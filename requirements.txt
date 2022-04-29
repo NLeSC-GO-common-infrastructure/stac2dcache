@@ -1,9 +1,8 @@
 aiohttp
-dcachefs
+dcachefs>=0.1.4
 fsspec
 geopandas
-pystac
+pystac>=1.2
 urlpath
 rasterio
 rioxarray
-tqdm
