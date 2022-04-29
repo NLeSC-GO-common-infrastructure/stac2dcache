@@ -7,7 +7,6 @@ import pathlib
 
 from fsspec.core import split_protocol
 
-fsspec.register_implementation("dcache", dcachefs.dCacheFileSystem)
 
 CHUNKSIZE = 5 * 2**20  # default chunk size for streaming
 
