@@ -11,9 +11,9 @@
    * - \3. Community Registry
      - |PyPI Badge|
    * - \4. Enable Citation
-     - 
+     - |Zenodo Badge|
    * - \5. Checklist
-     - 
+     - |CII Best Practices Badge|
    * - **Other best practices**
      -
    * - Continuous integration
@@ -30,6 +30,14 @@
 .. |PyPI Badge| image:: https://img.shields.io/pypi/v/stac2dcache.svg?colorB=blue
    :target: https://pypi.python.org/project/stac2dcache/
    :alt: PyPI Badge
+
+.. |Zenodo Badge| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.0000000.svg
+   :target: https://doi.org/10.5281/zenodo.0000000
+   :alt: Zenodo Badge
+
+.. |CII Best Practices Badge| image:: https://bestpractices.coreinfrastructure.org/projects/6561/badge
+   :target: https://bestpractices.coreinfrastructure.org/projects/6561
+   :alt: CII Best Practices Badge
 
 .. |Python Build| image:: https://github.com/NLeSC-GO-common-infrastructure/stac2dcache/workflows/Build/badge.svg
    :target: https://github.com/NLeSC-GO-common-infrastructure/stac2dcache/actions?query=workflow%3A%22Build%22
