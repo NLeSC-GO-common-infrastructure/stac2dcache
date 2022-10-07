@@ -60,8 +60,6 @@ following additional functionalities:
 * download remote assets to the local filesystem or to a dCache storage;
 * load assets using a set of predefined drivers (e.g. for raster data, and
   text files)
-* open a catalog as a `geopandas <https://github.com/geopandas/geopandas>`_ 
-  data-frame.
 
 Installation
 ------------
