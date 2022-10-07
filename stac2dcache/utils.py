@@ -1,4 +1,3 @@
-import geopandas
 import multiprocessing
 import urlpath
 
@@ -9,23 +8,6 @@ from .filesystem import copy
 
 
 mp_context = multiprocessing.get_context("spawn")
-
-
-def catalog2geopandas(catalog, crs=None):
-    """
-    Create a geopandas data-frame with the catalog items
-
-    :param catalog: (:class:`~pystac.Catalog`) input catalog
-    :param crs: (string or accepted CRS object) coordinate reference system
-        employed in the catalog (default is WGS84)
-    :return: :class:`~geopandas.GeoDataFrame`
-    """
-    crs = crs or "WGS84"
-    features = {item.id: item.to_dict() for item in catalog.get_all_items()}
-    gdf = geopandas.GeoDataFrame.from_features(features.values())
-    gdf.index = features.keys()
-    gdf = gdf.set_crs(crs)
-    return gdf
 
 
 def copy_asset(catalog, asset_key, update_catalog=False, item_id=None,

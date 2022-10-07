@@ -22,6 +22,10 @@ extras_require = {
         'pytest-cov',
         'pycodestyle',
     ],
+    'tutorial': [
+        'pystac_client',
+        'matplotlib',
+    ]
 }
 
 setup(

@@ -9,15 +9,14 @@ from . import test_data_path
 def test_configure_filesystem_returns_correct_fs_class():
     for fs_type in ("http", "dcache", "file"):
         fs_class = fsspec.get_filesystem_class(fs_type)
-        fs = configure_filesystem(filesystem=fs_type)
+        fs = configure_filesystem(protocol=fs_type)
         assert isinstance(fs, fs_class)
 
 
-def test_configure_filesystem_sets_username_and_password():
+def test_configure_filesystem_sets_username_and_password_https():
     auth = dict(username="user", password="pass")
     for fs_type in ("http", "dcache"):
-        fs = configure_filesystem(filesystem=fs_type,
-                                  **auth)
+        fs = configure_filesystem(protocol=fs_type, **auth)
         assert fs.client_kwargs['auth'].login == auth["username"]
         assert fs.client_kwargs['auth'].password == auth["password"]
 
@@ -27,7 +26,7 @@ def test_configure_filesystem_sets_token_filename():
     for token_file in (test_data_path/"macaroon.conf",
                        test_data_path/"macaroon.dat"):
         for fs_type in ("http", "dcache"):
-            fs = configure_filesystem(filesystem=fs_type,
+            fs = configure_filesystem(protocol=fs_type,
                                       token_filename=token_file)
             assert "Authorization" in fs.client_kwargs["headers"]
 
