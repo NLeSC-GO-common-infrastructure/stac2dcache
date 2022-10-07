@@ -1,12 +1,11 @@
 import fsspec
-import geopandas
 import pathlib
 import pystac
 import pytest
 import tempfile
 import xarray as xr
 
-from stac2dcache.utils import catalog2geopandas, copy_asset, get_asset
+from stac2dcache.utils import copy_asset, get_asset
 
 from . import test_data_path
 
@@ -33,36 +32,6 @@ def catalog_with_assets():
             "SELF_CONTAINED"
         )
         yield catalog
-
-
-def test_catalog2geopandas_returns_correct_data_type(catalog):
-    gdf = catalog2geopandas(catalog)
-    assert isinstance(gdf, geopandas.GeoDataFrame)
-
-
-def test_catalog2geopandas_returns_correct_indices(catalog):
-    gdf = catalog2geopandas(catalog)
-    item_ids = [i.id for i in catalog.get_all_items()]
-    assert gdf.index.size == len(item_ids)
-    assert all([i in gdf.index for i in item_ids])
-
-
-def test_catalog2geopandas_returns_all_catalog_fields(catalog):
-    gdf = catalog2geopandas(catalog)
-    item = next(catalog.get_all_items())
-    assert all([i in gdf.columns for i in item.properties.keys()])
-
-
-def test_catalog2geopandas_returns_correct_crs(catalog):
-    gdf = catalog2geopandas(catalog)
-    assert gdf.crs == "WGS84"
-
-
-def test_catalog2geopandas_returns_correct_crs_with_custom_value(catalog):
-    # assume the input catalog uses a different CRS - not actually true
-    custom_crs = "EPSG:3031"
-    gdf = catalog2geopandas(catalog, crs=custom_crs)
-    assert gdf.crs == custom_crs
 
 
 def test_copy_asset_for_all_items(catalog_with_assets):

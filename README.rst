@@ -66,7 +66,7 @@ following additional functionalities:
 Installation
 ------------
 
-To install STAC2dCache, do:
+STAC2dCache requires Python>=3.8. To install the package, do:
 
 .. code-block:: console
 
