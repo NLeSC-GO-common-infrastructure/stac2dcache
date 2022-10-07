@@ -3,5 +3,5 @@ dcachefs>=0.1.4
 fsspec
 pystac>=1.2
 urlpath
-rasterio
+rasterio>=1.3
 rioxarray

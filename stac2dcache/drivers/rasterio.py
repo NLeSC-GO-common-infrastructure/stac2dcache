@@ -1,6 +1,5 @@
 import rasterio
 import rioxarray
-import tempfile
 
 from .base import Driver
 
@@ -13,12 +12,12 @@ class RasterioDriver(Driver):
 
         :param fsspec_kwargs: (optional, dict) arguments passed to fsspec file
             system class open method
-        :param kwargs: (optional) arguments to be passed to open_rasterio
+        :param kwargs: (optional, dict) arguments to be passed to open_rasterio
         :return :class:`~rioxarray.core.dataarray.DataArray`
         """
         _fsspec_kwargs = fsspec_kwargs if fsspec_kwargs is not None else {}
         with self.filesystem.open(self.uri, "rb", **_fsspec_kwargs) as f:
-            with rasterio.open(f) as f_rio:
+            with rasterio.MemoryFile(f) as f_rio:
                 data_array = rioxarray.open_rasterio(f_rio, **kwargs)
                 data_array.load()
         return data_array
