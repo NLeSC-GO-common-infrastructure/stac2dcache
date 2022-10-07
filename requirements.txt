@@ -1,7 +1,6 @@
 aiohttp
 dcachefs>=0.1.4
 fsspec
-geopandas
 pystac>=1.2
 urlpath
 rasterio
