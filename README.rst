@@ -18,6 +18,8 @@
      -
    * - Continuous integration
      - |Python Build| |PyPI Publish|
+   * - Documentation
+     - |Read the Docs|
 
 .. |GitHub Badge| image:: https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue
    :target: https://github.com/NLeSC-GO-common-infrastructure/stac2dcache
@@ -46,6 +48,10 @@
 .. |PyPI Publish| image:: https://github.com/NLeSC-GO-common-infrastructure/stac2dcache/workflows/Publish/badge.svg
    :target: https://github.com/NLeSC-GO-common-infrastructure/stac2dcache/actions?query=workflow%3A%22Publish%22
    :alt: PyPI Publish
+
+.. |Read the Docs| image:: https://readthedocs.org/projects/stac2dcache/badge/?version=latest
+   :target: https://stac2dcache.readthedocs.io
+   :alt: Read the Docs
 
 ################################################################################
 STAC2dCache
@@ -87,19 +93,22 @@ Run tests (including coverage) with:
 
 
 Documentation
-*************
+-------------
 
-A short `tutorial <notebooks/tutorial.ipynb>`_ illustrates how 
-to use STAC2dCache.
+The project's full documentation can be found `here`_, where a notebook tutorial (also available `in this repository`_)
+illustrates how to use STAC2dCache.
+
+.. _here: https://stac2dcache.readthedocs.io
+.. _in this repository: notebooks/tutorial.ipynb
 
 Contributing
-************
+------------
 
 If you want to contribute to the development of STAC2dCache,
 have a look at the `contribution guidelines <CONTRIBUTING.rst>`_.
 
 License
-*******
+-------
 
 Copyright (c) 2020, Netherlands eScience Center
 
@@ -115,9 +124,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-
-
 Credits
-*******
+-------
 
 This package was created with `Cookiecutter <https://github.com/audreyr/cookiecutter>`_ and the `NLeSC/python-template <https://github.com/NLeSC/python-template>`_.
