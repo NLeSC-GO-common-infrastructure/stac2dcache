@@ -1,20 +1,36 @@
-# YAML 1.2
----
-cff-version: "1.1.0"
-title: "STAC2dCache"
-abstract: "STAC2dCache is a Python tool to create and manipulate STAC catalogs on a dCache storage system. "
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  STAC2dCache: STAC catalogs on a dCache storage
+  system
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
 authors:
-  -
-    name: "Team Atlas, Netherlands eScience Center"
-    city: Amsterdam
-    country: NL
-    email:
-date-released: 2022-04-29
-version: "0.3.0"
-repository-code: "https://github.com/NLeSC-GO-common-infrastructure/stac2dcache"
+  - given-names: Francesco
+    family-names: Nattino
+    email: f.nattino@esciencecenter.nl
+    affiliation: Netherlands eScience Center
+    orcid: 'https://orcid.org/0000-0003-3286-0139'
+  - given-names: Ou
+    family-names: Ku
+    email: o.ku@esciencecenter.nl
+    affiliation: Netherlands eScience Center
+    orcid: 'https://orcid.org/0000-0002-5373-5209'
+repository-code: >-
+  https://github.com/NLeSC-GO-common-infrastructure/stac2dcache
+abstract: >-
+  STAC2dCache is a Python tool to create and
+  manipulate STAC catalogs on a dCache storage
+  system.
 keywords:
   - STAC
-  - "SpatioTemporal Asset Catalog"
+  - SpatioTemporal Asset Catalog
+  - Geospatial
   - dCache
-message: "If you use this software, please cite it using these metadata."
-license: "Apache-2.0"
+license: Apache-2.0
+version: 0.3.0
+date-released: '2022-04-29'

@@ -1,0 +1,27 @@
+{
+  "creators": [
+    {
+      "affiliation": "Netherlands eScience Center",
+      "name": "Nattino, Francesco",
+      "orcid": "0000-0003-3286-0139"
+    },
+    {
+      "affiliation": "Netherlands eScience Center",
+      "name": "Ku, Ou",
+      "orcid": "0000-0002-5373-5209"
+    }
+  ],
+  "description": "STAC2dCache is a Python tool to create and manipulate STAC catalogs on a dCache storage system.",
+  "keywords": [
+    "STAC",
+    "SpatioTemporal Asset Catalog",
+    "Geospatial",
+    "dCache"
+  ],
+  "license": {
+    "id": "Apache-2.0"
+  },
+  "publication_date": "2022-04-29",
+  "title": "STAC2dCache: STAC catalogs on a dCache storage system",
+  "version": "0.3.0"
+}
