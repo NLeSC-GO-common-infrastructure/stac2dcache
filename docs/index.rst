@@ -19,7 +19,8 @@ of STAC2dCache, have a look at the  `contribution guidelines`_.
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Contents:
 
+   readme
    notebooks/tutorial
