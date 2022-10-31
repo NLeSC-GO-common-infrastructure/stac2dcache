@@ -21,7 +21,7 @@
   "license": {
     "id": "Apache-2.0"
   },
-  "publication_date": "2022-04-29",
+  "publication_date": "2022-10-31",
   "title": "STAC2dCache: STAC catalogs on a dCache storage system",
-  "version": "0.3.0"
+  "version": "0.4.0"
 }

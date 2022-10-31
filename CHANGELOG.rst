@@ -5,6 +5,35 @@ Change Log
 All notable changes to this project will be documented in this file.
 This project adheres to `Semantic Versioning <http://semver.org/>`_.
 
+
+Unreleased
+**********
+
+
+[0.4.0]
+*******
+
+Added
+-----
+
+* documentation is rendered on readthedocs
+
+Fixed
+-----
+
+* rasterio driver updated to work with newer rasterio, pinned version >=1.3
+* solved issues with configuration when a configuration file is present
+
+Removed
+-------
+
+* catalog2geopandas dropped
+
+Changed
+-------
+
+* minor refactoring in stac_io module
+
 [0.3.0]
 *******
 
