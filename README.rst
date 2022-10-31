@@ -33,8 +33,8 @@
    :target: https://pypi.python.org/project/stac2dcache/
    :alt: PyPI Badge
 
-.. |Zenodo Badge| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.0000000.svg
-   :target: https://doi.org/10.5281/zenodo.0000000
+.. |Zenodo Badge| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7268267.svg
+   :target: https://doi.org/10.5281/zenodo.7268267
    :alt: Zenodo Badge
 
 .. |CII Best Practices Badge| image:: https://bestpractices.coreinfrastructure.org/projects/6561/badge
