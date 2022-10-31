@@ -21,7 +21,7 @@ Added
 Fixed
 -----
 
-* rasterio driver updated to work with newer rasterio, pinned version >=1.3
+* rasterio driver updated to work with newer rasterio, pinned version to 1.3.2 until issue #29 is solved
 * solved issues with configuration when a configuration file is present
 
 Removed
